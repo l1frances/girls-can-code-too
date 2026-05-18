@@ -153,31 +153,59 @@
     }
 
     /* ── CAROUSEL (OUR WORK) ── */
-    .carousel-wrap { position: relative; overflow: hidden; width: 100%; height: 100%; }
-    .carousel-track { display: flex; height: 100%; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); }
-    .carousel-slide { min-width: 100%; height: 100%; flex-shrink: 0; }
-    .carousel-slide .frame { height: 100%; background: #f8f8f8; }
-    .carousel-slide .frame img { object-fit: contain; background: #f8f8f8; }
+    .car-outer {
+      position: relative;
+      width: 100%;
+      overflow: hidden;           /* clips everything outside the viewport */
+      border-radius: 8px;
+      aspect-ratio: 4 / 3;
+      background: #f0f0f0;
+    }
+    /* KEY FIX: width:100% on the track means translateX(-100%) = exactly one slide width */
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      will-change: transform;
+      transition: transform 0.52s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    /* flex:0 0 100% = never shrink, never grow, always one full slide wide */
+    .carousel-slide {
+      flex: 0 0 100%;
+      min-width: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+      transition: transform 0.52s ease;
+    }
     .car-btn {
       position: absolute; top: 50%; transform: translateY(-50%);
-      background: rgba(255,255,255,0.9); border: 1px solid var(--div);
-      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,0.92); border: none;
+      width: 38px; height: 38px; border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 10; transition: background 0.15s;
+      cursor: pointer; z-index: 10;
+      transition: background 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
     }
-    .car-btn:hover { background: #fff; }
-    .car-prev { left: 10px; }
-    .car-next { right: 10px; }
+    .car-btn:hover { background: #fff; box-shadow: 0 4px 14px rgba(0,0,0,0.18); }
+    .car-prev { left: 12px; }
+    .car-next { right: 12px; }
     .car-dots {
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 6px;
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 10;
     }
     .car-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,0.5); cursor: pointer;
-      transition: background 0.2s;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.45); cursor: pointer;
+      transition: background 0.22s, transform 0.22s;
     }
-    .car-dot.on { background: #fff; }
+    .car-dot.on { background: #fff; transform: scale(1.3); }
 
     /* ── PROGRAMS - SUB TOGGLE ── */
     .prog-toggle {
@@ -511,20 +539,20 @@
           </div>
         </div>
 
-        <!-- Right: photo carousel — landscape 4:3 crop -->
-        <div style="position:relative;overflow:hidden;border-radius:6px;width:100%;aspect-ratio:4/3;">
-          <div class="carousel-track" id="car-track" style="height:100%;">
-            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/3.jpg" alt="Girls coding at workshop" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
-            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/4.jpg" alt="Girls coding in classroom" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
-            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/5.jpg" alt="Girls showing laptop projects" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
-            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/6.jpg" alt="Girls coding at event" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
-            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/7.jpg" alt="Girls with tablets at workshop" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+        <!-- Right: photo carousel — one full image per slide, 4:3 landscape -->
+        <div class="car-outer">
+          <div class="carousel-track" id="car-track">
+            <div class="carousel-slide"><img src="images/work1.jpg" alt="Girls coding at workshop" /></div>
+            <div class="carousel-slide"><img src="images/work2.jpg" alt="Girls showing coding projects" /></div>
+            <div class="carousel-slide"><img src="images/work3.jpg" alt="Frances mentoring a student" /></div>
+            <div class="carousel-slide"><img src="images/work4.jpg" alt="Girls Can Code Too classroom session" /></div>
+            <div class="carousel-slide"><img src="images/work5.jpg" alt="Girl Scout troop coding workshop" /></div>
           </div>
           <button class="car-btn car-prev" onclick="carMove(-1)" aria-label="Previous photo">
-            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M15 18l-6-6 6-6"/></svg>
+            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
           </button>
           <button class="car-btn car-next" onclick="carMove(1)" aria-label="Next photo">
-            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M9 18l6-6-6-6"/></svg>
+            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
           </button>
           <div class="car-dots" id="car-dots">
             <div class="car-dot on" onclick="carGo(0)"></div>
@@ -776,9 +804,16 @@
     }
 
     /* ── CAROUSEL ── */
+    /* translateX(-N * 100%) works correctly because .carousel-track has width:100%,
+       so 100% = one container width = one slide width. Each step moves exactly one slide. */
     var carIdx = 0;
     var carTotal = 5;
-    function carMove(dir) { carGo((carIdx + dir + carTotal) % carTotal); }
+    var carPaused = false;
+
+    function carMove(dir) {
+      carGo((carIdx + dir + carTotal) % carTotal);
+    }
+
     function carGo(idx) {
       carIdx = idx;
       document.getElementById('car-track').style.transform = 'translateX(-' + (idx * 100) + '%)';
@@ -786,9 +821,21 @@
         d.classList.toggle('on', i === idx);
       });
     }
+
+    /* Autoplay: advances every 5s, pauses if user interacted recently */
     setInterval(function() {
-      if (document.getElementById('programs').classList.contains('on')) carMove(1);
-    }, 4000);
+      if (!carPaused && document.getElementById('programs').classList.contains('on')) {
+        carMove(1);
+      }
+    }, 5000);
+
+    /* Pause autoplay for 8s after manual navigation */
+    document.querySelectorAll('.car-btn, .car-dot').forEach(function(el) {
+      el.addEventListener('click', function() {
+        carPaused = true;
+        setTimeout(function() { carPaused = false; }, 8000);
+      });
+    });
 
     /* ── FLIP CARD KEYBOARD ── */
     document.querySelectorAll('.flip-card').forEach(function(card) {
