@@ -417,17 +417,19 @@
   <div id="about" class="tab">
     <div class="view" style="padding-top:0;padding-bottom:0;">
 
-      <!-- Top: two-column grid (text | photo) -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;width:100%;margin-bottom:1.75rem;">
+      <!-- Two-column grid: left = text + awards centered in column | right = photo -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;width:100%;">
 
-        <!-- Left: heading + bio text only -->
+        <!-- Left: heading + text + awards (all within this column, awards centered to column width) -->
         <div style="display:flex;flex-direction:column;">
-          <h2 class="h1" style="margin-bottom:1.1rem;">ABOUT</h2>
-          <p class="bd" style="margin-bottom:0.6rem;">
+
+          <h2 class="h1" style="margin-bottom:1rem;">ABOUT</h2>
+
+          <p class="bd" style="margin-bottom:0.55rem;">
             Frances Li is a sophomore at USC studying Business Administration with a minor
             in Real Estate Development and emphasis in Entrepreneurship.
           </p>
-          <p class="bd" style="margin-bottom:0.6rem;">
+          <p class="bd" style="margin-bottom:0.55rem;">
             At age 16, she founded Girls Can Code Too after recognizing that many young
             girls lacked access to coding education or felt intimidated participating in
             STEM environments. What began through cold outreach and pitching herself to
@@ -435,49 +437,50 @@
             initiative that has impacted 300+ girls ages 5-16 through bi-monthly
             workshops and mentorship.
           </p>
-          <p class="bd">
+          <p class="bd" style="margin-bottom:1.25rem;">
             Her mission extends beyond teaching technical skills. Through Girls Can Code
             Too, Frances aims to help young girls feel confident, represented, and
             empowered to pursue opportunities in STEM and beyond.
           </p>
+
+          <!-- Awards: justify-content center = centered within this column only -->
+          <div class="award-row" style="justify-content:center;margin-top:0;">
+            <div class="award" id="aw-bronze" onclick="toggleAward('bronze')" role="button" tabindex="0" aria-label="Bronze Award - click to learn more">
+              <div class="award-c" style="background:rgba(205,127,50,0.08);">
+                <img src="images/bronzeaward.jpg" alt="Bronze Award" />
+              </div>
+              <span class="award-n" style="color:#cd7f32;opacity:1;">Bronze Award</span>
+              <span class="award-hint" style="color:#cd7f32;">tap to learn</span>
+            </div>
+            <div class="award" id="aw-silver" onclick="toggleAward('silver')" role="button" tabindex="0" aria-label="Silver Award - click to learn more">
+              <div class="award-c" style="background:rgba(160,160,160,0.08);">
+                <img src="images/silveraward.jpg" alt="Silver Award" />
+              </div>
+              <span class="award-n" style="color:#909090;opacity:1;">Silver Award</span>
+              <span class="award-hint" style="color:#909090;">tap to learn</span>
+            </div>
+            <div class="award" id="aw-gold" onclick="toggleAward('gold')" role="button" tabindex="0" aria-label="Gold Award - click to learn more">
+              <div class="award-c" style="background:rgba(212,160,23,0.08);">
+                <img src="images/goldaward.webp" alt="Gold Award" />
+              </div>
+              <span class="award-n" style="color:#c9960c;opacity:1;">Gold Award</span>
+              <span class="award-hint" style="color:#c9960c;">tap to learn</span>
+            </div>
+          </div>
+
+          <!-- Award description reveal — stays in text column -->
+          <div class="award-desc-box" id="award-desc-box">
+            <p class="award-desc-text" id="award-desc-text"></p>
+          </div>
+
         </div>
 
-        <!-- Right: photo -->
+        <!-- Right: photo — height-constrained to keep single viewport -->
         <div style="display:flex;align-items:center;justify-content:center;">
           <img src="images/2.jpg" alt="Frances Li, founder of Girls Can Code Too"
-            style="width:100%;max-width:460px;max-height:calc(100vh - var(--nav-h) - 10rem);height:auto;object-fit:contain;display:block;border-radius:4px;" />
+            style="width:100%;max-width:480px;max-height:calc(100vh - var(--nav-h) - 3rem);height:auto;object-fit:contain;display:block;border-radius:4px;" />
         </div>
 
-      </div>
-
-      <!-- Bottom: awards centered across full width -->
-      <div class="award-row" style="justify-content:center;margin-top:0;">
-        <div class="award" id="aw-bronze" onclick="toggleAward('bronze')" role="button" tabindex="0" aria-label="Bronze Award - click to learn more">
-          <div class="award-c" style="background:rgba(205,127,50,0.08);">
-            <img src="images/bronzeaward.jpg" alt="Bronze Award" />
-          </div>
-          <span class="award-n" style="color:#cd7f32;opacity:1;">Bronze Award</span>
-          <span class="award-hint" style="color:#cd7f32;">tap to learn</span>
-        </div>
-        <div class="award" id="aw-silver" onclick="toggleAward('silver')" role="button" tabindex="0" aria-label="Silver Award - click to learn more">
-          <div class="award-c" style="background:rgba(160,160,160,0.08);">
-            <img src="images/silveraward.jpg" alt="Silver Award" />
-          </div>
-          <span class="award-n" style="color:#909090;opacity:1;">Silver Award</span>
-          <span class="award-hint" style="color:#909090;">tap to learn</span>
-        </div>
-        <div class="award" id="aw-gold" onclick="toggleAward('gold')" role="button" tabindex="0" aria-label="Gold Award - click to learn more">
-          <div class="award-c" style="background:rgba(212,160,23,0.08);">
-            <img src="images/goldaward.webp" alt="Gold Award" />
-          </div>
-          <span class="award-n" style="color:#c9960c;opacity:1;">Gold Award</span>
-          <span class="award-hint" style="color:#c9960c;">tap to learn</span>
-        </div>
-      </div>
-
-      <!-- Award description reveal -->
-      <div class="award-desc-box" id="award-desc-box">
-        <p class="award-desc-text" id="award-desc-text"></p>
       </div>
 
     </div>
