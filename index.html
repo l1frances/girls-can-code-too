@@ -421,7 +421,7 @@
             belong in STEM and beyond.
           </p>
           <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-            <button class="btn" onclick="go('about')">Learn More</button>
+            <button class="btn" onclick="go('about', {award:'gold'})">Learn More</button>
             <button class="btn" onclick="go('contact')">Join Us</button>
           </div>
         </div>
@@ -758,13 +758,36 @@
 
   <script>
     /* ── TAB SWITCHING ── */
-    function go(name) {
+    function go(name, opts) {
+      /* Hide all tabs */
       document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
-      document.getElementById(name).classList.add('on');
+
+      /* Show target tab */
+      var tab = document.getElementById(name);
+      tab.classList.add('on');
+
+      /* Scroll the tab itself back to top (handles Impact snap + any overflow) */
+      tab.scrollTop = 0;
+
+      /* Also reset window scroll for mobile (static layout) */
+      window.scrollTo(0, 0);
+
+      /* Update active nav link */
       document.querySelectorAll('.nl[data-t]').forEach(function(l) {
         l.classList.toggle('active', l.getAttribute('data-t') === name);
       });
-      if (name === 'impact') { setTimeout(countUp, 80); }
+
+      /* Tab-specific hooks */
+      if (name === 'impact') {
+        /* Reset snap container to first panel */
+        tab.scrollTop = 0;
+        setTimeout(countUp, 80);
+      }
+
+      /* If navigating to About with openAward flag, click that award */
+      if (name === 'about' && opts && opts.award) {
+        setTimeout(function() { toggleAward(opts.award); }, 120);
+      }
     }
 
     /* ── MOBILE MENU ── */
