@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Girls Can Code Too</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pink:     #e0449a;
+      --navy:     #1a237e;
+      --soft:     #3d4f8a;
+      --div:      rgba(26,35,126,0.13);
+      --blue1:    #D5E6F7;
+      --blue2:    #E7F0FA;
+      --rose:     #FFE4EE;
+      --proof:    #b8c9d9;
+      --nav-h:    60px;
+    }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: #fff; color: var(--navy);
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--nav-h); background: #fff;
+      border-bottom: 1px solid var(--div);
+      display: flex; align-items: center;
+    }
+    .nav-inner {
+      width: 100%; max-width: 1200px; margin: 0 auto;
+      padding: 0 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      background: none; border: none; cursor: pointer; padding: 0;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-logo img { height: 1.8rem; width: auto; mix-blend-mode: multiply; }
+    .nav-brand {
+      font-size: 0.72rem; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--pink);
+      font-family: 'Inter', sans-serif; white-space: nowrap;
+    }
+    .nav-links { display: flex; gap: 2.25rem; }
+    .nl {
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--pink);
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; padding: 0;
+      transition: opacity 0.15s;
+    }
+    .nl:hover { opacity: 0.55; }
+    .nl.active { opacity: 0.42; }
+    .ham { display: none; background: none; border: none; cursor: pointer; padding: 6px; }
+    #mob-menu {
+      display: none; position: fixed; top: var(--nav-h); left: 0; right: 0;
+      background: #fff; border-bottom: 1px solid var(--div);
+      padding: 1.25rem 2rem; flex-direction: column; gap: 1rem; z-index: 199;
+    }
+    #mob-menu.open { display: flex; }
+    .ml {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--pink);
+      background: none; border: none; cursor: pointer;
+      text-align: left; font-family: 'Inter', sans-serif; padding: 0;
+    }
+
+    /* ── TABS ── */
+    .tab {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      height: calc(100vh - var(--nav-h));
+      overflow-y: auto;
+      flex-direction: column;
+    }
+    .tab.on { display: flex; animation: fin 0.25s ease; }
+    @keyframes fin { from { opacity: 0; } to { opacity: 1; } }
+
+    /* ── SHARED ── */
+    .view {
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+      max-width: 1200px; width: 100%; margin: 0 auto; padding: 0 2.5rem;
+    }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .lbl { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.17em; text-transform: uppercase; color: var(--pink); display: block; }
+    .h1  { font-size: clamp(1.3rem,2.2vw,1.9rem); font-weight: 800; color: var(--navy); letter-spacing: -0.01em; line-height: 1.1; }
+    .bd  { font-size: 0.82rem; line-height: 1.75; color: var(--soft); font-weight: 300; }
+    .hr  { border: none; border-top: 1px solid var(--div); }
+    .frame { border-radius: 2px; overflow: hidden; }
+    .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* outline buttons (matching slide 1 reference) */
+    .btn {
+      display: inline-block; padding: 0.6rem 1.6rem;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      background: transparent; color: var(--navy);
+      border: 1px solid var(--navy); cursor: pointer;
+      text-decoration: none; transition: all 0.15s;
+    }
+    .btn:hover { background: var(--navy); color: #fff; }
+    .btn-pink { background: var(--pink); color: #fff; border-color: var(--pink); }
+    .btn-pink:hover { opacity: 0.82; background: var(--pink); color: #fff; }
+
+    /* stat strip */
+    .strip {
+      border-top: 1px solid var(--div);
+      display: grid; grid-template-columns: repeat(4,1fr);
+    }
+    .strip-cell { padding: 0.9rem 2rem; }
+    .strip-cell + .strip-cell { border-left: 1px solid var(--div); }
+    .sl { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 0.15rem; }
+    .sn { font-size: 1.45rem; font-weight: 300; color: var(--navy); letter-spacing: -0.02em; }
+
+    /* ── ABOUT ── */
+    .award-row { display: flex; gap: 2rem; margin-top: 0; align-items: flex-start; justify-content: flex-start; }
+    .award {
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      cursor: pointer; transition: transform 0.2s;
+    }
+    .award:hover { transform: translateY(-3px); }
+    .award-c {
+      width: 64px; height: 64px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #aw-bronze.active .award-c { border-color: #cd7f32; box-shadow: 0 0 0 3px rgba(205,127,50,0.18); }
+    #aw-silver.active .award-c { border-color: #909090; box-shadow: 0 0 0 3px rgba(144,144,144,0.18); }
+    #aw-gold.active   .award-c { border-color: #c9960c; box-shadow: 0 0 0 3px rgba(201,150,12,0.18); }
+    .award-c img { width: 50px; height: 50px; object-fit: contain; border-radius: 50%; }
+    .award-n { font-size: 0.56rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); opacity: 0.65; }
+    .award-hint { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pink); opacity: 0.7; }
+    .award-desc-box {
+      margin-top: 1.25rem; min-height: 0;
+      overflow: hidden;
+      transition: opacity 0.35s ease, max-height 0.5s ease;
+      max-height: 0; opacity: 0;
+    }
+    .award-desc-box.open { max-height: 200px; opacity: 1; }
+    .award-desc-text {
+      font-size: 0.78rem; font-style: italic;
+      line-height: 1.65; text-align: center;
+      /* color set dynamically by JS per award */
+    }
+
+    /* ── CAROUSEL (OUR WORK) ── */
+    .carousel-wrap { position: relative; overflow: hidden; width: 100%; height: 100%; }
+    .carousel-track { display: flex; height: 100%; transition: transform 0.45s cubic-bezier(0.4,0,0.2,1); }
+    .carousel-slide { min-width: 100%; height: 100%; flex-shrink: 0; }
+    .carousel-slide .frame { height: 100%; background: #f8f8f8; }
+    .carousel-slide .frame img { object-fit: contain; background: #f8f8f8; }
+    .car-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.9); border: 1px solid var(--div);
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; transition: background 0.15s;
+    }
+    .car-btn:hover { background: #fff; }
+    .car-prev { left: 10px; }
+    .car-next { right: 10px; }
+    .car-dots {
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px;
+    }
+    .car-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,0.5); cursor: pointer;
+      transition: background 0.2s;
+    }
+    .car-dot.on { background: #fff; }
+
+    /* ── PROGRAMS - SUB TOGGLE ── */
+    .prog-toggle {
+      display: flex; gap: 0; margin-bottom: 1.25rem;
+      border: 1px solid var(--div); border-radius: 2px; overflow: hidden;
+      width: fit-content;
+    }
+    .ptab {
+      font-size: 0.63rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; font-family: 'Inter', sans-serif;
+      padding: 0.5rem 1.25rem; background: transparent; color: var(--soft);
+      border: none; cursor: pointer; transition: all 0.15s;
+    }
+    .ptab.on { background: var(--pink); color: #fff; }
+    .prog-view { display: none; }
+    .prog-view.on { display: block; }
+
+    /* Flip cards */
+    .flip-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 0.875rem; }
+    .flip-card { perspective: 800px; cursor: pointer; height: clamp(200px, 30vh, 280px); }
+    .flip-inner {
+      position: relative; width: 100%; height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+    .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+    .flip-face {
+      position: absolute; inset: 0; backface-visibility: hidden;
+      border-radius: 2px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 1.25rem;
+    }
+    .flip-front { background: var(--blue1); }
+    .flip-back  { background: var(--blue2); transform: rotateY(180deg); align-items: flex-start; justify-content: flex-start; }
+    .flip-title {
+      font-size: 1rem; font-weight: 600; color: var(--navy);
+      text-align: center; line-height: 1.3;
+    }
+    .flip-back .flip-title { font-size: 0.82rem; margin-bottom: 0.75rem; text-align: left; }
+    .flip-back ul { list-style: disc; padding-left: 1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .flip-back li { font-size: 0.73rem; color: var(--soft); line-height: 1.45; }
+    .flip-hint {
+      font-size: 0.58rem; color: var(--pink); letter-spacing: 0.08em;
+      text-transform: uppercase; margin-top: 0.75rem; opacity: 0.7;
+    }
+
+    /* ── IMPACT ── */
+    #impact {
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* Each panel locks to exact viewport height */
+    .snap-panel {
+      flex-shrink: 0;
+      width: 100%;
+      height: calc(100vh - var(--nav-h));
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Scroll arrow */
+    .scroll-arrow {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      border: 1.5px solid var(--navy);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      animation: arrowBounce 1.6s ease-in-out infinite;
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 10;
+    }
+    .scroll-arrow:hover {
+      background: var(--navy);
+    }
+    .scroll-arrow:hover svg { stroke: #fff; }
+    @keyframes arrowBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(7px); }
+    }
+    .snap-inner {
+      max-width: 1200px;
+      width: 100%;
+      padding: 0 2.5rem;
+    }
+    .impact-heading {
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 800; letter-spacing: -0.01em;
+      text-transform: uppercase; color: var(--navy);
+      margin-bottom: 2rem; line-height: 1.1;
+    }
+    .impact-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--navy);
+      margin-bottom: 1.75rem; display: block;
+    }
+    .stat-row { display: grid; grid-template-columns: repeat(4,1fr); border: 1px solid var(--div); }
+    .sc { padding: 2rem 2.25rem; }
+    .sc + .sc { border-left: 1px solid var(--div); }
+    .sl2 { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--navy); display: block; margin-bottom: 1rem; }
+    .sn2 { font-size: 3.25rem; font-weight: 300; color: var(--navy); letter-spacing: -0.02em; line-height: 1; }
+    .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
+    .pc { background: var(--proof); border-radius: 2px; padding: 3rem 2rem; text-align: center; }
+    .pn { font-size: 2.75rem; font-weight: 800; color: var(--navy); letter-spacing: -0.03em; margin-bottom: 0.6rem; }
+    .pd { font-size: 0.85rem; color: var(--navy); font-weight: 300; line-height: 1.5; }
+    .quote { font-size: 0.88rem; color: var(--navy); font-style: italic; line-height: 1.8; }
+    .feedback-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+
+    /* ── CONTACT ── */
+    .inv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.625rem; }
+    .inv-card { background: var(--rose); border-radius: 2px; padding: 1rem 1.1rem; }
+    .inv-title { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--navy); margin-bottom: 0.3rem; }
+    .inv-desc  { font-size: 0.73rem; color: var(--soft); line-height: 1.5; font-weight: 300; }
+    .faq-item  { padding-bottom: 0.7rem; margin-bottom: 0.7rem; border-bottom: 1px solid var(--div); }
+    .faq-q     { font-size: 0.85rem; font-weight: 700; color: var(--pink); margin-bottom: 0.2rem; }
+    .faq-a     { font-size: 0.78rem; color: var(--soft); line-height: 1.55; font-weight: 300; }
+
+    /* ── MOBILE ── */
+    @media (max-width: 820px) {
+      html, body { overflow: auto; }
+      .tab { position: static; height: auto; overflow: visible; }
+      .tab.on { display: block; }
+      #impact { scroll-snap-type: none; overflow-y: visible; display: block; }
+      .snap-panel { height: auto; min-height: unset; flex-shrink: unset; scroll-snap-align: none; padding: 3rem 0; }
+      .snap-inner { padding: 0 1.25rem; }
+      .feedback-row { grid-template-columns: 1fr; gap: 1.5rem; }
+      .view { padding: 2rem 1.25rem; justify-content: flex-start; }
+      .nav-links { display: none; }
+      .ham { display: flex; }
+      .two { grid-template-columns: 1fr; gap: 1.75rem; }
+      .flip-grid { grid-template-columns: 1fr 1fr; }
+      .flip-card { height: 180px; }
+      .stat-row { grid-template-columns: 1fr 1fr; }
+      .sc:nth-child(3), .sc:nth-child(4) { border-top: 1px solid var(--div); }
+      .sc:nth-child(odd) { border-left: none; }
+      .proof-grid { grid-template-columns: 1fr 1fr; }
+      .feedback-row { grid-template-columns: 1fr; gap: 1.5rem; }
+      .strip { grid-template-columns: 1fr 1fr; }
+      .strip-cell:nth-child(3) { border-top: 1px solid var(--div); }
+      .strip-cell:nth-child(4) { border-top: 1px solid var(--div); }
+      .strip-cell:nth-child(odd) { border-left: none; }
+      .inv-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .flip-grid { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+      .sc + .sc { border-left: none; border-top: 1px solid var(--div); }
+      .sc:nth-child(odd) { border-left: none; }
+      .proof-grid { grid-template-columns: 1fr; }
+      .inv-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <button class="nav-logo" onclick="go('home')" aria-label="Home">
+        <img src="images/logo.png" alt="" />
+        <span class="nav-brand">Girls Can Code Too</span>
+      </button>
+      <div class="nav-links">
+        <button class="nl active" data-t="home"     onclick="go('home')">Home</button>
+        <button class="nl"        data-t="about"    onclick="go('about')">About</button>
+        <button class="nl"        data-t="programs" onclick="go('programs')">Programs</button>
+        <button class="nl"        data-t="impact"   onclick="go('impact')">Impact</button>
+        <button class="nl"        data-t="contact"  onclick="go('contact')">Contact</button>
+      </div>
+      <button class="ham" id="ham" onclick="toggleMob()" aria-label="Menu" aria-expanded="false">
+        <svg id="ico-m" width="22" height="22" fill="none" stroke="#e0449a" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        <svg id="ico-x" width="22" height="22" fill="none" stroke="#e0449a" stroke-width="2" viewBox="0 0 24 24" style="display:none"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </nav>
+  <div id="mob-menu">
+    <button class="ml" onclick="go('home');closeMob()">Home</button>
+    <button class="ml" onclick="go('about');closeMob()">About</button>
+    <button class="ml" onclick="go('programs');closeMob()">Programs</button>
+    <button class="ml" onclick="go('impact');closeMob()">Impact</button>
+    <button class="ml" onclick="go('contact');closeMob()">Contact</button>
+  </div>
+
+
+  <!-- ════════════════════════════════
+       HOME  (slide 1)
+  ════════════════════════════════ -->
+  <div id="home" class="tab on">
+    <div class="view">
+      <div class="two">
+
+        <!-- Logo large -->
+        <div style="display:flex;justify-content:center;align-items:center;">
+          <img src="images/logo.png" alt="Girls Can Code Too"
+            style="width:100%;max-width:380px;height:auto;object-fit:contain;mix-blend-mode:multiply;" />
+        </div>
+
+        <!-- Right text (all pink, matching reference) -->
+        <div>
+          <span class="lbl" style="margin-bottom:1rem;">Empowering the Next Generation</span>
+          <p style="font-size:0.9rem;line-height:1.8;color:var(--pink);font-weight:400;max-width:380px;margin-bottom:2rem;">
+            Helping girls discover their confidence, voice, and potential through coding,
+            creativity, and a supportive community that empowers them to believe they
+            belong in STEM and beyond.
+          </p>
+          <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+            <button class="btn" onclick="go('about')">Learn More</button>
+            <button class="btn" onclick="go('contact')">Join Us</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Stat strip pinned to bottom -->
+    <div class="strip">
+      <div class="strip-cell"><span class="sl">Reach</span><span class="sn">300+</span></div>
+      <div class="strip-cell"><span class="sl">Hours</span><span class="sn">500+</span></div>
+      <div class="strip-cell"><span class="sl">Lessons</span><span class="sn">30+</span></div>
+      <div class="strip-cell"><span class="sl">Cost</span><span class="sn">$0</span></div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════
+       ABOUT  (slide 2)
+  ════════════════════════════════ -->
+  <div id="about" class="tab">
+    <div class="view" style="padding-top:0;padding-bottom:0;">
+
+      <!-- Top: two-column grid (text | photo) -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;width:100%;margin-bottom:1.75rem;">
+
+        <!-- Left: heading + bio text only -->
+        <div style="display:flex;flex-direction:column;">
+          <h2 class="h1" style="margin-bottom:1.1rem;">ABOUT</h2>
+          <p class="bd" style="margin-bottom:0.6rem;">
+            Frances Li is a sophomore at USC studying Business Administration with a minor
+            in Real Estate Development and emphasis in Entrepreneurship.
+          </p>
+          <p class="bd" style="margin-bottom:0.6rem;">
+            At age 16, she founded Girls Can Code Too after recognizing that many young
+            girls lacked access to coding education or felt intimidated participating in
+            STEM environments. What began through cold outreach and pitching herself to
+            Girl Scout Troop Leader meetings evolved into a confidence-focused coding
+            initiative that has impacted 300+ girls ages 5-16 through bi-monthly
+            workshops and mentorship.
+          </p>
+          <p class="bd">
+            Her mission extends beyond teaching technical skills. Through Girls Can Code
+            Too, Frances aims to help young girls feel confident, represented, and
+            empowered to pursue opportunities in STEM and beyond.
+          </p>
+        </div>
+
+        <!-- Right: photo -->
+        <div style="display:flex;align-items:center;justify-content:center;">
+          <img src="images/2.jpg" alt="Frances Li, founder of Girls Can Code Too"
+            style="width:100%;max-width:460px;max-height:calc(100vh - var(--nav-h) - 10rem);height:auto;object-fit:contain;display:block;border-radius:4px;" />
+        </div>
+
+      </div>
+
+      <!-- Bottom: awards centered across full width -->
+      <div class="award-row" style="justify-content:center;margin-top:0;">
+        <div class="award" id="aw-bronze" onclick="toggleAward('bronze')" role="button" tabindex="0" aria-label="Bronze Award - click to learn more">
+          <div class="award-c" style="background:rgba(205,127,50,0.08);">
+            <img src="images/bronzeaward.jpg" alt="Bronze Award" />
+          </div>
+          <span class="award-n" style="color:#cd7f32;opacity:1;">Bronze Award</span>
+          <span class="award-hint" style="color:#cd7f32;">tap to learn</span>
+        </div>
+        <div class="award" id="aw-silver" onclick="toggleAward('silver')" role="button" tabindex="0" aria-label="Silver Award - click to learn more">
+          <div class="award-c" style="background:rgba(160,160,160,0.08);">
+            <img src="images/silveraward.jpg" alt="Silver Award" />
+          </div>
+          <span class="award-n" style="color:#909090;opacity:1;">Silver Award</span>
+          <span class="award-hint" style="color:#909090;">tap to learn</span>
+        </div>
+        <div class="award" id="aw-gold" onclick="toggleAward('gold')" role="button" tabindex="0" aria-label="Gold Award - click to learn more">
+          <div class="award-c" style="background:rgba(212,160,23,0.08);">
+            <img src="images/goldaward.webp" alt="Gold Award" />
+          </div>
+          <span class="award-n" style="color:#c9960c;opacity:1;">Gold Award</span>
+          <span class="award-hint" style="color:#c9960c;">tap to learn</span>
+        </div>
+      </div>
+
+      <!-- Award description reveal -->
+      <div class="award-desc-box" id="award-desc-box">
+        <p class="award-desc-text" id="award-desc-text"></p>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════
+       PROGRAMS  (carousel only)
+  ════════════════════════════════ -->
+  <div id="programs" class="tab">
+    <div class="view">
+      <div class="two" style="align-items:center;gap:3.5rem;">
+
+        <!-- Left: static text -->
+        <div style="display:flex;flex-direction:column;justify-content:center;">
+          <h2 class="h1" style="margin-bottom:1.75rem;">OUR WORK</h2>
+          <div style="margin-bottom:1.5rem;">
+            <span class="lbl" style="margin-bottom:0.5rem;">Problem:</span>
+            <p class="bd">Too many girls grow up believing technology and STEM spaces are not
+            meant for them, often because they lack encouragement, exposure, or supportive
+            learning opportunities early on.</p>
+          </div>
+          <div>
+            <span class="lbl" style="margin-bottom:0.5rem;">Solution:</span>
+            <p class="bd">Girls Can Code Too introduces girls to coding through collaborative
+            workshops that fosters curiosity and creativity while making STEM related
+            activities feel approachable and inclusive.</p>
+          </div>
+        </div>
+
+        <!-- Right: photo carousel — landscape 4:3 crop -->
+        <div style="position:relative;overflow:hidden;border-radius:6px;width:100%;aspect-ratio:4/3;">
+          <div class="carousel-track" id="car-track" style="height:100%;">
+            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/3.jpg" alt="Girls coding at workshop" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/4.jpg" alt="Girls coding in classroom" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/5.jpg" alt="Girls showing laptop projects" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/6.jpg" alt="Girls coding at event" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+            <div class="carousel-slide" style="min-width:100%;height:100%;"><img src="images/7.jpg" alt="Girls with tablets at workshop" style="width:100%;height:100%;object-fit:cover;object-position:center center;display:block;" /></div>
+          </div>
+          <button class="car-btn car-prev" onclick="carMove(-1)" aria-label="Previous photo">
+            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button class="car-btn car-next" onclick="carMove(1)" aria-label="Next photo">
+            <svg width="14" height="14" fill="none" stroke="#1a237e" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M9 18l6-6-6-6"/></svg>
+          </button>
+          <div class="car-dots" id="car-dots">
+            <div class="car-dot on" onclick="carGo(0)"></div>
+            <div class="car-dot" onclick="carGo(1)"></div>
+            <div class="car-dot" onclick="carGo(2)"></div>
+            <div class="car-dot" onclick="carGo(3)"></div>
+            <div class="car-dot" onclick="carGo(4)"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════
+       IMPACT  (scroll-snap 4 panels)
+  ════════════════════════════════ -->
+  <div id="impact" class="tab">
+
+    <!-- Panel 1: Impact Data -->
+    <div class="snap-panel" id="ip-1">
+      <div class="snap-inner">
+        <h2 class="impact-heading">Impact</h2>
+        <div class="stat-row">
+          <div class="sc"><span class="sl2">Reach</span><span class="sn2" data-count="300" data-sfx="+">300+</span></div>
+          <div class="sc"><span class="sl2">Hours</span><span class="sn2" data-count="500" data-sfx="+">500+</span></div>
+          <div class="sc"><span class="sl2">Lessons</span><span class="sn2" data-count="30" data-sfx="+">30+</span></div>
+          <div class="sc"><span class="sl2">Cost</span><span class="sn2">$0</span></div>
+        </div>
+      </div>
+      <button class="scroll-arrow" onclick="impactScroll('ip-2')" aria-label="Next section">
+        <svg width="16" height="16" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Panel 2: What We Built -->
+    <div class="snap-panel" id="ip-2">
+      <div class="snap-inner">
+        <h2 class="impact-heading">What We Built</h2>
+        <div class="flip-grid">
+
+          <div class="flip-card" onclick="this.classList.toggle('flipped')" tabindex="0" role="button" aria-label="Beginner Coding Workshops">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <p class="flip-title">Beginner<br>Coding<br>Workshops</p>
+                <span class="flip-hint">tap to reveal</span>
+              </div>
+              <div class="flip-face flip-back">
+                <p class="flip-title">Beginner Coding Workshops</p>
+                <ul><li>Beginner-friendly coding fundamentals</li><li>Engaging curriculum</li><li>Digital literacy</li></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card" onclick="this.classList.toggle('flipped')" tabindex="0" role="button" aria-label="Confidence Through STEM">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <p class="flip-title">Confidence<br>Through<br>STEM</p>
+                <span class="flip-hint">tap to reveal</span>
+              </div>
+              <div class="flip-face flip-back">
+                <p class="flip-title">Confidence Through STEM</p>
+                <ul><li>Showcased influential women in STEM</li><li>Supportive learning environment</li><li>Encouragement first teaching</li></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card" onclick="this.classList.toggle('flipped')" tabindex="0" role="button" aria-label="Peer Learning and Mentorship">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <p class="flip-title">Peer<br>Learning &amp;<br>Mentorship</p>
+                <span class="flip-hint">tap to reveal</span>
+              </div>
+              <div class="flip-face flip-back">
+                <p class="flip-title">Peer Learning &amp; Mentorship</p>
+                <ul><li>Volunteer and mentor support</li><li>Collaborative projects</li><li>Group based lessons</li></ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="flip-card" onclick="this.classList.toggle('flipped')" tabindex="0" role="button" aria-label="Community Events">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <p class="flip-title">Community<br>Events</p>
+                <span class="flip-hint">tap to reveal</span>
+              </div>
+              <div class="flip-face flip-back">
+                <p class="flip-title">Community Events</p>
+                <ul><li>School and community partnerships</li><li>Expanded outreach initiatives</li><li>Educational lessons</li></ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <button class="scroll-arrow" onclick="impactScroll('ip-3')" aria-label="Next section">
+        <svg width="16" height="16" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Panel 3: Proof in Numbers -->
+    <div class="snap-panel" id="ip-3">
+      <div class="snap-inner">
+        <h2 class="impact-heading">Proof in the Numbers</h2>
+        <div class="proof-grid">
+          <div class="pc"><p class="pn">100%</p><p class="pd">of participants learned something new</p></div>
+          <div class="pc"><p class="pn">98%</p><p class="pd">of participants would take a secondary coding course</p></div>
+          <div class="pc"><p class="pn">4.87</p><p class="pd">Average course rating</p></div>
+          <div class="pc"><p class="pn">75%</p><p class="pd">of girls have never taken a coding course prior</p></div>
+        </div>
+      </div>
+      <button class="scroll-arrow" onclick="impactScroll('ip-4')" aria-label="Next section">
+        <svg width="16" height="16" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
+
+    <!-- Panel 4: Feedback -->
+    <div class="snap-panel" id="ip-4">
+      <div class="snap-inner">
+        <h2 class="impact-heading" style="margin-bottom:1.25rem;">Feedback</h2>
+        <div style="width:100%;margin-bottom:1.5rem;border-radius:2px;overflow:hidden;">
+          <img src="images/feedback-main.jpg" alt="Girls smiling and coding at workshop"
+            style="width:100%;height:auto;display:block;object-fit:contain;" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.5rem;">
+          <p class="quote" style="text-align:left;">"Girls Can Code Too helped me feel confident trying something new."</p>
+          <p class="quote" style="text-align:center;">"It showed me that I can be in robotics club."</p>
+          <p class="quote" style="text-align:right;">"This program made coding feel less scary and more fun."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- ════════════════════════════════
+       CONTACT  (slide 13)
+  ════════════════════════════════ -->
+  <div id="contact" class="tab">
+    <div class="view">
+      <div class="two" style="align-items:start;gap:4rem;">
+
+        <!-- Left: Get Involved + Contact -->
+        <div>
+          <h2 class="h1" style="margin-bottom:1.25rem;">GET INVOLVED</h2>
+          <div class="inv-grid" style="margin-bottom:1.5rem;">
+            <div class="inv-card">
+              <p class="inv-title">Volunteer</p>
+              <p class="inv-desc">Help mentor, teach, and support our workshops.</p>
+            </div>
+            <div class="inv-card">
+              <p class="inv-title">Come Join Us</p>
+              <p class="inv-desc">Opened to girls ages 5-16 who are eager to learn a new skill.</p>
+            </div>
+            <div class="inv-card">
+              <p class="inv-title">Partner</p>
+              <p class="inv-desc">Bring Girls Can Code Too to your school or organization.</p>
+            </div>
+            <div class="inv-card">
+              <p class="inv-title">Donate</p>
+              <p class="inv-desc">Keep programming free and accessible for every girl.</p>
+            </div>
+          </div>
+
+          <div style="padding-top:1.25rem;border-top:1px solid var(--div);">
+            <h3 class="h1" style="font-size:1.25rem;margin-bottom:0.75rem;">CONTACT</h3>
+            <a href="mailto:frances@girlscancodetoo.com"
+              style="font-size:0.95rem;font-weight:700;color:var(--navy);text-decoration:none;">
+              frances@girlscancodetoo.com
+            </a>
+            <div style="display:flex;gap:1.25rem;margin-top:0.875rem;flex-wrap:wrap;">
+              <a href="#" class="nl" style="font-size:0.6rem;">Instagram</a>
+              <a href="#" class="nl" style="font-size:0.6rem;">LinkedIn</a>
+              <a href="#" class="nl" style="font-size:0.6rem;">TikTok</a>
+              <a href="#" class="nl" style="font-size:0.6rem;">YouTube</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: FAQ -->
+        <div>
+          <h2 class="h1" style="margin-bottom:1.5rem;">FAQ</h2>
+          <div class="faq-item">
+            <p class="faq-q">Is it free?</p>
+            <p class="faq-a">100% free and please let us know if you need assistance with providing a laptop and we can make accommodations.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">What ages?</p>
+            <p class="faq-a">Girls ages 5-16! But if you do not fall within that range and are interested then please contact us.</p>
+          </div>
+          <div class="faq-item">
+            <p class="faq-q">Experience required?</p>
+            <p class="faq-a">No. All programs are designed from zero to learn the fundamentals.</p>
+          </div>
+          <div>
+            <p class="faq-q">How do I get involved?</p>
+            <p class="faq-a">Fill out the form or email us directly at frances@girlscancodetoo.com and we will be in touch soon.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    /* ── TAB SWITCHING ── */
+    function go(name) {
+      document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('on'); });
+      document.getElementById(name).classList.add('on');
+      document.querySelectorAll('.nl[data-t]').forEach(function(l) {
+        l.classList.toggle('active', l.getAttribute('data-t') === name);
+      });
+      if (name === 'impact') { setTimeout(countUp, 80); }
+    }
+
+    /* ── MOBILE MENU ── */
+    function toggleMob() {
+      var m = document.getElementById('mob-menu');
+      var im = document.getElementById('ico-m');
+      var ix = document.getElementById('ico-x');
+      var open = m.classList.contains('open');
+      m.classList.toggle('open', !open);
+      im.style.display = open ? 'block' : 'none';
+      ix.style.display = open ? 'none' : 'block';
+      document.getElementById('ham').setAttribute('aria-expanded', String(!open));
+    }
+    function closeMob() {
+      var m = document.getElementById('mob-menu');
+      m.classList.remove('open');
+      document.getElementById('ico-m').style.display = 'block';
+      document.getElementById('ico-x').style.display = 'none';
+      document.getElementById('ham').setAttribute('aria-expanded', 'false');
+    }
+    document.addEventListener('click', function(e) {
+      var m = document.getElementById('mob-menu');
+      var h = document.getElementById('ham');
+      if (m.classList.contains('open') && !m.contains(e.target) && !h.contains(e.target)) closeMob();
+    });
+
+    /* ── IMPACT PANEL SCROLL ── */
+    function impactScroll(targetId) {
+      var container = document.getElementById('impact');
+      var target = document.getElementById(targetId);
+      if (container && target) {
+        container.scrollTo({ top: target.offsetTop, behavior: 'smooth' });
+      }
+    }
+
+    /* ── CAROUSEL ── */
+    var carIdx = 0;
+    var carTotal = 5;
+    function carMove(dir) { carGo((carIdx + dir + carTotal) % carTotal); }
+    function carGo(idx) {
+      carIdx = idx;
+      document.getElementById('car-track').style.transform = 'translateX(-' + (idx * 100) + '%)';
+      document.querySelectorAll('.car-dot').forEach(function(d, i) {
+        d.classList.toggle('on', i === idx);
+      });
+    }
+    setInterval(function() {
+      if (document.getElementById('programs').classList.contains('on')) carMove(1);
+    }, 4000);
+
+    /* ── FLIP CARD KEYBOARD ── */
+    document.querySelectorAll('.flip-card').forEach(function(card) {
+      card.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.toggle('flipped');
+        }
+      });
+    });
+
+    /* ── AWARD REVEAL ── */
+    var awardTexts = {
+      bronze: "I helped raise 100+ donations and monetary support for JAFCO, an organization close to my heart because one of my Girl Scout sisters was adopted from there. This taught me the importance of showing up for children who need community and care.",
+      silver: "I worked with two of my Girl Scout sisters by hand crochetting 50+ blankets from recycled plastic bags for the homeless through LifeNet Fort Lauderdale, turning reusing discarded plastic bags into a more comfortable living situation. (Each blanket takes ~20 hours)",
+      gold:   "I created Girls Can Code Too to teach girls ages 5-16 coding and confidence, hoping to show young girls that they belong in STEM and are capable of achieving anything they set their minds to."
+    };
+    var awardColors = { bronze: '#cd7f32', silver: '#909090', gold: '#c9960c' };
+    var activeAward = null;
+    function toggleAward(type) {
+      var box  = document.getElementById('award-desc-box');
+      var text = document.getElementById('award-desc-text');
+      ['bronze','silver','gold'].forEach(function(a) {
+        document.getElementById('aw-' + a).classList.remove('active');
+      });
+      if (activeAward === type) {
+        box.classList.remove('open');
+        activeAward = null;
+        return;
+      }
+      activeAward = type;
+      document.getElementById('aw-' + type).classList.add('active');
+      box.classList.remove('open');
+      setTimeout(function() {
+        text.textContent = awardTexts[type];
+        text.style.color  = awardColors[type];
+        box.classList.add('open');
+      }, 180);
+    }
+
+    /* ── COUNTERS ── */
+    function countUp() {
+      document.querySelectorAll('[data-count]').forEach(function(el) {
+        var target = parseInt(el.getAttribute('data-count'));
+        var sfx    = el.getAttribute('data-sfx') || '';
+        var start  = performance.now();
+        var dur    = 1400;
+        function tick(now) {
+          var t = Math.min((now - start) / dur, 1);
+          var e = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.round(e * target) + sfx;
+          if (t < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+  </script>
+
+</body>
+</html>
